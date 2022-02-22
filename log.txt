@@ -1,0 +1,2 @@
+февр. 22, 2022 4:53:03 AM Main main
+INFO: Script started. Variant: 3114013
