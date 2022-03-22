@@ -4,25 +4,39 @@ import FileManagment.sources.Csv;
 import FileManagment.sources.possibleFile;
 import exceptions.InvalidFileNameException;
 import exceptions.UnsupportedFileExtensionException;
+import models.Collection;
+import models.MusicBand;
 
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * It Check availible fileTypes and start read it
+ */
 public class FileManager {
-    private String filePath;
-    private String fileExtension;
-    private Logger logger;
+    private final String filePath;
+    private final String fileExtension;
+    private final Logger logger;
 
+    /**
+     * Init
+     * @param filePath
+     * @param logger
+     */
     public FileManager(String filePath, Logger logger) {
         this.filePath = filePath;
         this.logger = logger;
         this.fileExtension = fileExtensionRead();
     }
 
+    /**
+     * read extensions
+     * @return
+     */
     private String fileExtensionRead() {
         String fileExtension = "";
         try {
@@ -38,18 +52,20 @@ public class FileManager {
         return fileExtension;
     }
 
-
-
-
-    public void readFile() throws FileNotFoundException {
-        Csv csv = new Csv(logger);
-
-        List<possibleFile> possibleFiles = Arrays.asList(csv);
+    /**
+     * read data from file
+     * @return
+     * @throws FileNotFoundException
+     */
+    public Collection readFile() throws FileNotFoundException {
+        Csv csv = new Csv(logger, filePath);
+        List<possibleFile> possibleFiles = List.of(csv);
         boolean isSupportedFileType = false;
-        for (possibleFile file: possibleFiles) {
+        for (possibleFile file : possibleFiles) {
             if (Objects.equals(file.ToString(), fileExtension)) {
                 isSupportedFileType = true;
-                file.read(filePath);
+                return file.read(filePath);
+
             }
         }
         try {
@@ -61,6 +77,7 @@ public class FileManager {
             System.exit(1);
         }
 
+        return null;
     }
 
 

@@ -1,22 +1,28 @@
 package commands;
 
-import FileManagment.sources.Csv;
-import FileManagment.sources.possibleFile;
+import models.Collection;
+import models.MusicBand;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
 public abstract class Command {
-    public Logger logger;
-
-    public abstract int argumentsCount();
+    public static Logger logger;
+    private String command;
+    private String description;
 
     public Command(String command, String description, Logger logger) {
+        this.command = command;
+        this.description = description;
         this.logger = logger;
     }
 
     public Command(String command, String description) {
+        this.command = command;
+        this.description = description;
     }
 
     public static List<Command> activeCommands() {
@@ -43,5 +49,9 @@ public abstract class Command {
 
     public abstract String toString();
 
-    public abstract Boolean run(String param);
+    public abstract Boolean run(String param, ArrayList<String> argument2, Collection collection, MusicBand musicBand) throws IOException;
+
+    public String help() {
+        return command + " - " + description;
+    }
 }
